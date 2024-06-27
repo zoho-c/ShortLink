@@ -5,9 +5,13 @@ package cn.zhouhao.shortlink.admin.dao.entity;
  * @version 1.0
  */
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.util.Date;
 
 @Data
 @TableName("t_user")
@@ -46,4 +50,13 @@ public class UserDO {
      * 注销时间戳
      */
     private Long deletionTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Integer delFlag;
 }
