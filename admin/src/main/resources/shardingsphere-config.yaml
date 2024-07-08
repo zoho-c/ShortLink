@@ -3,7 +3,7 @@ dataSources:
   ds_0:
     dataSourceClassName: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/link?useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/link?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&rewriteBatchedStatements=true&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: root
 
@@ -21,6 +21,12 @@ rules:
             shardingColumn: username
             # 分片算法，对应 rules[0].shardingAlgorithms
             shardingAlgorithmName: user_table_hash_mod
+#      t_group:
+#        actualDataNodes: ds_0.t_group_${0..15}
+#        tableStrategy:
+#          standard:
+#            shardingColumn: username
+#            shardingAlgorithmName: group_table_hash_mod
     # 分片算法
     shardingAlgorithms:
       # 数据表分片算法
@@ -30,6 +36,11 @@ rules:
         # 分片数量
         props:
           sharding-count: 16
+      group_table_hash_mod:
+        type: HASH_MOD
+        props:
+          sharding-count: 16
+
 
   # 数据加密存储规则
   - !ENCRYPT
