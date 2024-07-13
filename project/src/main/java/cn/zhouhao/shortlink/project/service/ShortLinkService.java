@@ -2,7 +2,10 @@ package cn.zhouhao.shortlink.project.service;
 
 import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
+import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
+import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -17,4 +20,10 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @return 短链接创建信息
      */
     ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam);
+
+    /**
+     * 分页查询短链接
+     */
+    IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkPageReqDTO requestParam);
+
 }

@@ -6,10 +6,14 @@ import cn.zhouhao.shortlink.project.common.convention.exception.ServiceException
 import cn.zhouhao.shortlink.project.config.RBloomFilterConfiguration;
 import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
+import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.project.dao.mapper.ShortLinkMapper;
+import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import cn.zhouhao.shortlink.project.service.ShortLinkService;
 import cn.zhouhao.shortlink.project.toolbox.HashUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +76,17 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 .originUrl(requestParam.getOriginUrl())
                 .gid(requestParam.getGid())
                 .build();
+    }
+
+    @Override
+    public IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkPageReqDTO requestParam) {
+        LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
+                .eq(ShortLinkDO::getGid, requestParam.getGid())
+                .eq(ShortLinkDO::getEnableStatus, 0)
+                .eq(ShortLinkDO::getDelFlag, 0);
+        IPage<ShortLinkDO> resultPage = baseMapper.selectPage(requestParam, queryWrapper);
+
+        return resultPage.convert(each -> BeanUtil.toBean(each, ShortLinkPageRespDTO.class));
     }
 
     public String generateSuffix(ShortLinkCreateReqDTO requestParam) {
