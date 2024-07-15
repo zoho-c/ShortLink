@@ -21,12 +21,12 @@ rules:
             shardingColumn: username
             # 分片算法，对应 rules[0].shardingAlgorithms
             shardingAlgorithmName: user_table_hash_mod
-#      t_group:
-#        actualDataNodes: ds_0.t_group_${0..15}
-#        tableStrategy:
-#          standard:
-#            shardingColumn: username
-#            shardingAlgorithmName: group_table_hash_mod
+      t_group:
+        actualDataNodes: ds_0.t_group_${0..15}
+        tableStrategy:
+          standard:
+            shardingColumn: username
+            shardingAlgorithmName: group_table_hash_mod
     # 分片算法
     shardingAlgorithms:
       # 数据表分片算法

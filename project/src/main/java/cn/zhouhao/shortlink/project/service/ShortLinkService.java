@@ -4,9 +4,12 @@ import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
+import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * @author hiroshi
@@ -26,4 +29,11 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      */
     IPage<ShortLinkPageRespDTO> pageShortLink(ShortLinkPageReqDTO requestParam);
 
+    /**
+     * 批量查询gid中的短链接数量
+     *
+     * @param requestParam 需要查询的gid
+     * @return 每个gid对应的短链接数量
+     */
+    List<ShortLinkGroupCountQueryRespDTO> listGroupShortLinkCount(List<String> requestParam);
 }
