@@ -3,6 +3,7 @@ package cn.zhouhao.shortlink.project.service;
 import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
+import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
@@ -36,4 +37,11 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @return 每个gid对应的短链接数量
      */
     List<ShortLinkGroupCountQueryRespDTO> listGroupShortLinkCount(List<String> requestParam);
+
+    /**
+     * 更新短链接
+     *
+     * @param requestParam 更新短链接请求参数
+     */
+    public void updateShortLink(ShortLinkUpdateReqDTO requestParam);
 }
