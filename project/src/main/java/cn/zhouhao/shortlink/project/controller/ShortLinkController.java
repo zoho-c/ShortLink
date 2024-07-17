@@ -10,7 +10,10 @@ import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import cn.zhouhao.shortlink.project.service.ShortLinkService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
  * @author hiroshi
  * @version 1.0
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class ShortLinkController {
@@ -44,5 +48,11 @@ public class ShortLinkController {
     public Result<Void> updateShortLink(@RequestBody ShortLinkUpdateReqDTO requestParam) {
         shortLinkService.updateShortLink(requestParam);
         return Results.success();
+    }
+
+    @GetMapping("/{short-uri}")
+    public void restoreUrl(@PathVariable("short-uri") String shortUri, ServletRequest request, ServletResponse response) {
+        log.info("get short link:{}", shortUri);
+        shortLinkService.restoreUrl(shortUri, request, response);
     }
 }
