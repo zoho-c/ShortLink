@@ -215,7 +215,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
 
     public String generateSuffix(ShortLinkCreateReqDTO requestParam) {
         int customGenerateCount = 0;
-        String shortUri = null;
+        String shortUri;
         while (true) {
             if (customGenerateCount > 10) {
                 throw new ServiceException("短链接频繁生成，请稍后重试");
