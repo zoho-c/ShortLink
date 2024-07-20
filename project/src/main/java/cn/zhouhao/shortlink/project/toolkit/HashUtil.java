@@ -1,4 +1,4 @@
-package cn.zhouhao.shortlink.project.toolbox;
+package cn.zhouhao.shortlink.project.toolkit;
 
 import cn.hutool.core.lang.hash.MurmurHash;
 
