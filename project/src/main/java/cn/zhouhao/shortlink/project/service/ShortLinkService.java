@@ -55,4 +55,14 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @param response HTTP 响应
      */
     void restoreUrl(String shortUri, ServletRequest request, ServletResponse response);
+
+
+    /**
+     * 短链接访问统计
+     *
+     * @param fullShortUri 短链接
+     * @param request      HTTP 请求
+     * @param response     HTTP 响应
+     */
+    void shortLinkStats(String fullShortUri, String gid, ServletRequest request, ServletResponse response);
 }
