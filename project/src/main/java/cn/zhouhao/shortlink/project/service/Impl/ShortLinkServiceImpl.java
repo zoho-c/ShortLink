@@ -11,18 +11,12 @@ import cn.hutool.http.HttpUtil;
 import cn.zhouhao.shortlink.project.common.convention.exception.ClientException;
 import cn.zhouhao.shortlink.project.common.convention.exception.ServiceException;
 import cn.zhouhao.shortlink.project.common.enums.ValidateDateTypeEnum;
-import cn.zhouhao.shortlink.project.dao.LinkAccessStatsDO;
-import cn.zhouhao.shortlink.project.dao.LinkLocaleStatsDO;
-import cn.zhouhao.shortlink.project.dao.ShortLinkGotoDO;
-import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
-import cn.zhouhao.shortlink.project.dao.mapper.LinkAccessStatsMapper;
-import cn.zhouhao.shortlink.project.dao.mapper.LinkLocaleStatsMapper;
-import cn.zhouhao.shortlink.project.dao.mapper.ShortLinkGotoMapper;
+import cn.zhouhao.shortlink.project.dao.*;
+import cn.zhouhao.shortlink.project.dao.mapper.*;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
-import cn.zhouhao.shortlink.project.dao.mapper.ShortLinkMapper;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
 import cn.zhouhao.shortlink.project.service.ShortLinkService;
@@ -80,6 +74,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final ShortLinkGotoMapper shortLinkGotoMapper;
     private final LinkAccessStatsMapper linkAccessStatsMapper;
     private final LinkLocaleStatsMapper linkLocaleStatsMapper;
+    private final LinkOsStatsMapper linkOsStatsMapper;
 
     // 用于方式缓存穿透
     private final StringRedisTemplate stringRedisTemplate;
@@ -368,7 +363,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             String localeResultStr = HttpUtil.get(AMAP_REMOTE_URL, localeParamMap);
             JSONObject localeResultObj = JSON.parseObject(localeResultStr);
             String infoCode = localeResultObj.getString("infocode");
-            if (StrUtil.isNotBlank(infoCode) && StrUtil.equals(infoCode, "10000")){
+            if (StrUtil.isNotBlank(infoCode) && StrUtil.equals(infoCode, "10000")) {
                 String province = localeResultObj.getString("province");
                 boolean unknownFlag = StrUtil.equals(province, "[]");
                 LinkLocaleStatsDO linkLocaleStatsDO = LinkLocaleStatsDO.builder()
@@ -382,6 +377,13 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                         .date(new Date())
                         .build();
                 linkLocaleStatsMapper.shortLinkLocaleState(linkLocaleStatsDO);
+                LinkOsStatsDO linkOsStatsDO = LinkOsStatsDO.builder()
+                        .os(LinkUtil.getOs((HttpServletRequest) request))
+                        .cnt(1)
+                        .fullShortUrl(fullShortUrl)
+                        .date(new Date())
+                        .build();
+                linkOsStatsMapper.shortLinkOsState(linkOsStatsDO);
             }
 
         } catch (Throwable throwable) {
