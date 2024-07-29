@@ -17,3 +17,8 @@ spring:
     view:
       prefix: /templates/
       suffix: .html
+
+short-link:
+  stats:
+    locale:
+      amap-key: 9c40bb41c643a40effd9ebdbdaa46b4d
