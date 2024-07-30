@@ -19,6 +19,7 @@ public class LinkUtil {
                 .map(each -> DateUtil.between(new Date(), each, DateUnit.MS))
                 .orElse(DEFAULT_CACHE_VALID_TIME);
     }
+
     /**
      * 获取用户真实IP
      *
@@ -93,5 +94,20 @@ public class LinkUtil {
             return "Unknown";
         }
     }
+
+    /**
+     * 获取用户访问设备
+     *
+     * @param request 请求
+     * @return 访问设备
+     */
+    public static String getDevice(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
+        if (userAgent.toLowerCase().contains("mobile")) {
+            return "Mobile";
+        }
+        return "PC";
+    }
+
 
 }
