@@ -1,6 +1,6 @@
 package cn.zhouhao.shortlink.project.service;
 
-import cn.zhouhao.shortlink.project.dao.ShortLinkDO;
+import cn.zhouhao.shortlink.project.dao.entity.ShortLinkDO;
 import cn.zhouhao.shortlink.project.dto.req.RecycleBinSaveReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkRecycleBinPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;

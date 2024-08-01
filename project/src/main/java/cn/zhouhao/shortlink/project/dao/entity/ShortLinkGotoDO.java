@@ -1,4 +1,4 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;

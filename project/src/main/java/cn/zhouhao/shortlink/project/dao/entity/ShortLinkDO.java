@@ -1,4 +1,4 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
 import cn.zhouhao.shortlink.project.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableField;

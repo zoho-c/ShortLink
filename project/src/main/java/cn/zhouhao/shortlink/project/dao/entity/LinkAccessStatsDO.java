@@ -1,5 +1,6 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
+import cn.zhouhao.shortlink.project.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +14,12 @@ import java.util.Date;
  * @version 1.0
  */
 @Data
-@TableName("t_link_locale_stats")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkLocaleStatsDO extends BaseDO{
+@TableName("t_link_access_stats")
+public class LinkAccessStatsDO extends BaseDO {
+
     /**
      * id
      */
@@ -29,11 +31,6 @@ public class LinkLocaleStatsDO extends BaseDO{
     private String fullShortUrl;
 
     /**
-     * 分组标识
-     */
-    private String gid;
-
-    /**
      * 日期
      */
     private Date date;
@@ -41,25 +38,25 @@ public class LinkLocaleStatsDO extends BaseDO{
     /**
      * 访问量
      */
-    private Integer cnt;
+    private Integer pv;
 
     /**
-     * 省份名称
+     * 独立访客数
      */
-    private String province;
+    private Integer uv;
 
     /**
-     * 市名称
+     * 独立ip数
      */
-    private String city;
+    private Integer uip;
 
     /**
-     * 城市编码
+     * 小时
      */
-    private String adcode;
+    private Integer hour;
 
     /**
-     * 国家标识
+     * 星期
      */
-    private String country;
+    private Integer weekday;
 }

@@ -1,5 +1,6 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
+import cn.zhouhao.shortlink.project.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +14,11 @@ import java.util.Date;
  * @version 1.0
  */
 @Data
-@TableName("t_link_browser_stats")
+@TableName("t_link_network_stats")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkBrowserStatsDO {
-
+public class LinkNetworkStatsDO extends BaseDO {
     /**
      * id
      */
@@ -45,7 +45,7 @@ public class LinkBrowserStatsDO {
     private Integer cnt;
 
     /**
-     * 浏览器
+     * 访问网络
      */
-    private String browser;
+    private String network;
 }

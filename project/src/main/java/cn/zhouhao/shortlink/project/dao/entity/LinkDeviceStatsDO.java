@@ -1,5 +1,11 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
+/**
+ * @author hiroshi
+ * @version 1.0
+ */
+
+import cn.zhouhao.shortlink.project.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +15,14 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * @author hiroshi
- * @version 1.0
+ * 访问设备统计访问实体
  */
 @Data
-@TableName("t_link_os_stats")
+@TableName("t_link_device_stats")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkOsStatsDO {
+public class LinkDeviceStatsDO extends BaseDO {
     /**
      * id
      */
@@ -44,7 +49,7 @@ public class LinkOsStatsDO {
     private Integer cnt;
 
     /**
-     * 操作系统
+     * 设备
      */
-    private String os;
+    private String device;
 }

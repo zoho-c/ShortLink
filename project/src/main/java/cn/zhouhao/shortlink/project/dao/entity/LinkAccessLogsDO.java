@@ -1,27 +1,22 @@
-package cn.zhouhao.shortlink.project.dao;
+package cn.zhouhao.shortlink.project.dao.entity;
 
-/**
- * @author hiroshi
- * @version 1.0
- */
-
+import cn.zhouhao.shortlink.project.common.database.BaseDO;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
- * 访问设备统计访问实体
+ * @author hiroshi
+ * @version 1.0
  */
 @Data
-@TableName("t_link_device_stats")
+@TableName("t_link_access_logs")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkDeviceStatsDO extends BaseDO {
+public class LinkAccessLogsDO extends BaseDO {
     /**
      * id
      */
@@ -32,23 +27,24 @@ public class LinkDeviceStatsDO extends BaseDO {
      */
     private String fullShortUrl;
 
-    /**
-     * 分组标识
-     */
-    private String gid;
 
     /**
-     * 日期
+     * 用户信息
      */
-    private Date date;
+    private String user;
 
     /**
-     * 访问量
+     * 浏览器
      */
-    private Integer cnt;
+    private String browser;
 
     /**
-     * 设备
+     * 操作系统
      */
-    private String device;
+    private String os;
+
+    /**
+     * ip
+     */
+    private String ip;
 }
