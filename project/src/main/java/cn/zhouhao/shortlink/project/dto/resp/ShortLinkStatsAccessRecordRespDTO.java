@@ -1,37 +1,26 @@
-package cn.zhouhao.shortlink.project.dao.entity;
+package cn.zhouhao.shortlink.project.dto.resp;
 
-import cn.zhouhao.shortlink.project.common.database.BaseDO;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * @author hiroshi
  * @version 1.0
  */
 @Data
-@TableName("t_link_access_logs")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinkAccessLogsDO extends BaseDO {
+public class ShortLinkStatsAccessRecordRespDTO {
     /**
-     * id
+     * 访客类型
      */
-    private Long id;
-
-    /**
-     * 完整短链接
-     */
-    private String fullShortUrl;
-
-
-    /**
-     * 用户信息
-     */
-    private String user;
+    private String uvType;
 
     /**
      * 浏览器
@@ -62,4 +51,15 @@ public class LinkAccessLogsDO extends BaseDO {
      * 地区
      */
     private String locale;
+
+    /**
+     * 用户信息
+     */
+    private String user;
+
+    /**
+     * 访问时间
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 }
