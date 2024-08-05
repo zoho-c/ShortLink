@@ -2,6 +2,8 @@ package cn.zhouhao.shortlink.project.controller;
 
 import cn.zhouhao.shortlink.project.common.convention.result.Result;
 import cn.zhouhao.shortlink.project.common.convention.result.Results;
+import cn.zhouhao.shortlink.project.dto.req.ShortLinkBatchCreateReqDTO;
+import cn.zhouhao.shortlink.project.dto.resp.ShortLinkBatchCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
@@ -31,6 +33,10 @@ public class ShortLinkController {
     @PostMapping("/api/short-link/v1/create")
     public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
+    }
+    @PostMapping("/api/short-link/v1/create/batch")
+    public Result<ShortLinkBatchCreateRespDTO> batchCreateShortLink(@RequestBody ShortLinkBatchCreateReqDTO requestParam) {
+        return Results.success(shortLinkService.batchCreateShortLink(requestParam));
     }
 
     @GetMapping("/api/short-link/v1/page")

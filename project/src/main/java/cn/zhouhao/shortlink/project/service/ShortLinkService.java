@@ -1,9 +1,11 @@
 package cn.zhouhao.shortlink.project.service;
 
 import cn.zhouhao.shortlink.project.dao.entity.ShortLinkDO;
+import cn.zhouhao.shortlink.project.dto.req.ShortLinkBatchCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkPageReqDTO;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
+import cn.zhouhao.shortlink.project.dto.resp.ShortLinkBatchCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
@@ -65,4 +67,6 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @param response     HTTP 响应
      */
     void shortLinkStats(String fullShortUri, String gid, ServletRequest request, ServletResponse response);
+
+    ShortLinkBatchCreateRespDTO batchCreateShortLink(ShortLinkBatchCreateReqDTO requestParam);
 }

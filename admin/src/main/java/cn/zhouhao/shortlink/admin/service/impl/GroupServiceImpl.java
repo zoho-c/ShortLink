@@ -8,7 +8,7 @@ import cn.zhouhao.shortlink.admin.dao.mapper.GroupMapper;
 import cn.zhouhao.shortlink.admin.dto.req.ShortLinkGroupSortReqDTO;
 import cn.zhouhao.shortlink.admin.dto.req.ShortLinkGroupUpdateReqDTO;
 import cn.zhouhao.shortlink.admin.dto.resp.ShortLinkGroupRespDTO;
-import cn.zhouhao.shortlink.admin.remote.dto.ShortLinkService;
+import cn.zhouhao.shortlink.admin.remote.dto.ShortLinkRemoteService;
 import cn.zhouhao.shortlink.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.admin.service.GroupService;
 import cn.zhouhao.shortlink.admin.toolkit.RandomGenerator;
@@ -33,7 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
 
-    private final ShortLinkService shortLinkService = new ShortLinkService() {
+    private final ShortLinkRemoteService shortLinkRemoteService = new ShortLinkRemoteService() {
     };
 
     public boolean hasGid(String gid) {
@@ -69,7 +69,7 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
         List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
 
-        Result<List<ShortLinkGroupCountQueryRespDTO>> listResult = shortLinkService.listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
+        Result<List<ShortLinkGroupCountQueryRespDTO>> listResult = shortLinkRemoteService.listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
         List<ShortLinkGroupRespDTO> shortLinkGroupRespDTOList = BeanUtil.copyToList(groupDOList, ShortLinkGroupRespDTO.class);
 
         shortLinkGroupRespDTOList.forEach(each -> {

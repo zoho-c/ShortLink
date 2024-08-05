@@ -1,31 +1,28 @@
 package cn.zhouhao.shortlink.admin.remote.dto;
 
-import cn.hutool.Hutool;
 import cn.hutool.http.HttpUtil;
 import cn.zhouhao.shortlink.admin.common.convention.result.Result;
-import cn.zhouhao.shortlink.admin.common.convention.result.Results;
+import cn.zhouhao.shortlink.admin.remote.dto.req.ShortLinkBatchCreateReqDTO;
 import cn.zhouhao.shortlink.admin.remote.dto.req.ShortLinkCreateReqDTO;
 import cn.zhouhao.shortlink.admin.remote.dto.req.ShortLinkPageReqDTO;
+import cn.zhouhao.shortlink.admin.remote.dto.req.ShortLinkUpdateReqDTO;
+import cn.zhouhao.shortlink.admin.remote.dto.resp.ShortLinkBatchCreateRespDTO;
 import cn.zhouhao.shortlink.admin.remote.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.admin.remote.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.admin.remote.dto.resp.ShortLinkPageRespDTO;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author hiroshi
  * @version 1.0
  */
 
-public interface ShortLinkService {
+public interface ShortLinkRemoteService {
     /**
      * 创建短链接
      *
@@ -55,5 +52,26 @@ public interface ShortLinkService {
 
         return JSON.parseObject(resultBodyStr, new TypeReference<>() {
         });
+    }
+
+    /**
+     * 批量创建短链接
+     *
+     * @param requestParam 批量创建短链接请求参数
+     * @return 短链接批量创建响应
+     */
+    default Result<ShortLinkBatchCreateRespDTO> batchCreateShortLink(ShortLinkBatchCreateReqDTO requestParam) {
+        String resultBodyStr = HttpUtil.post("http://127.0.0.1:8001/api/short-link/v1/create/batch", JSON.toJSONString(requestParam));
+        return JSON.parseObject(resultBodyStr, new TypeReference<>() {
+        });
+    }
+
+    /**
+     * 修改短链接
+     *
+     * @param requestParam 修改短链接请求参数
+     */
+    default void updateShortLink(ShortLinkUpdateReqDTO requestParam) {
+        HttpUtil.post("http://127.0.0.1:8001/api/short-link/v1/update", JSON.toJSONString(requestParam));
     }
 }
