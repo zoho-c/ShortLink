@@ -7,6 +7,7 @@ import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
+import cn.zhouhao.shortlink.project.dto.riz.ShortLinkStatsRecordDTO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.ServletRequest;
@@ -65,4 +66,13 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
      * @param response     HTTP 响应
      */
     void shortLinkStats(String fullShortUri, String gid, ServletRequest request, ServletResponse response);
+
+    /**
+     * ShortLink Access Statistics Record
+     *
+     * @param fullShortUri         the shortLink  be accessed
+     * @param gid                  the gid of the short link
+     * @param shortLinkStatsRecord the statistics record DTO
+     */
+    void shortLinkStats(String fullShortUri, String gid, ShortLinkStatsRecordDTO shortLinkStatsRecord);
 }
