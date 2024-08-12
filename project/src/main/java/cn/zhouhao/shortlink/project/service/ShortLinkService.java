@@ -59,15 +59,6 @@ public interface ShortLinkService extends IService<ShortLinkDO> {
 
 
     /**
-     * 短链接访问统计
-     *
-     * @param fullShortUri 短链接
-     * @param request      HTTP 请求
-     * @param response     HTTP 响应
-     */
-    void shortLinkStats(String fullShortUri, String gid, ServletRequest request, ServletResponse response);
-
-    /**
      * ShortLink Access Statistics Record
      *
      * @param fullShortUri         the shortLink  be accessed
