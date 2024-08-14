@@ -12,6 +12,7 @@ import cn.hutool.http.HttpUtil;
 import cn.zhouhao.shortlink.project.common.convention.exception.ClientException;
 import cn.zhouhao.shortlink.project.common.convention.exception.ServiceException;
 import cn.zhouhao.shortlink.project.common.enums.ValidateDateTypeEnum;
+import cn.zhouhao.shortlink.project.config.GotoDomainWhiteListConfiguration;
 import cn.zhouhao.shortlink.project.dao.entity.*;
 import cn.zhouhao.shortlink.project.dao.mapper.*;
 import cn.zhouhao.shortlink.project.dto.req.ShortLinkCreateReqDTO;
@@ -75,6 +76,7 @@ import static cn.zhouhao.shortlink.project.common.constant.ShortLinkConstant.AMA
 public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLinkDO> implements ShortLinkService {
 
     private final RBloomFilter<String> shortUriCachePenetrationBloomFilter;
+    private final GotoDomainWhiteListConfiguration gotoDomainWhiteListConfiguration;
     private final ShortLinkGotoMapper shortLinkGotoMapper;
     private final LinkAccessStatsMapper linkAccessStatsMapper;
     private final LinkLocaleStatsMapper linkLocaleStatsMapper;
@@ -101,6 +103,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
 
     @Override
     public ShortLinkCreateRespDTO createShortLink(ShortLinkCreateReqDTO requestParam) {
+        verificationWhiteList(requestParam.getOriginUrl());
         String shortLinkSuffix = generateSuffix(requestParam);
 
         String fullShortUrl = StrBuilder.create(createShortLinkDefaultDomain)
@@ -182,6 +185,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateShortLink(ShortLinkUpdateReqDTO requestParam) {
+        verificationWhiteList(requestParam.getOriginUrl());
         LambdaQueryWrapper<ShortLinkDO> queryWrapper = Wrappers.lambdaQuery(ShortLinkDO.class)
                 .eq(ShortLinkDO::getGid, requestParam.getOriginGid())
                 .eq(ShortLinkDO::getFullShortUrl, requestParam.getFullShortUrl())
@@ -613,4 +617,20 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         }
         return null;
     }
+
+    private void verificationWhiteList(String originUrl) {
+        Boolean enable = gotoDomainWhiteListConfiguration.getEnable();
+        if (enable == null || !enable) {
+            return;
+        }
+        String domain = LinkUtil.extractDomain(originUrl);
+        if (StrUtil.isBlank(domain)) {
+            throw new ClientException("跳转链接填写错误");
+        }
+        List<String> details = gotoDomainWhiteListConfiguration.getDetails();
+        if (!details.contains(domain)) {
+            throw new ClientException("演示环境为避免恶意攻击，请生成以下网站跳转链接：" + gotoDomainWhiteListConfiguration.getNames());
+        }
+    }
+
 }
