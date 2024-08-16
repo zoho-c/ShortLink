@@ -1,7 +1,9 @@
 package cn.zhouhao.shortlink.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.zhouhao.shortlink.admin.common.biz.user.UserContext;
+import cn.zhouhao.shortlink.admin.common.convention.exception.ClientException;
 import cn.zhouhao.shortlink.admin.common.convention.result.Result;
 import cn.zhouhao.shortlink.admin.dao.entity.GroupDO;
 import cn.zhouhao.shortlink.admin.dao.mapper.GroupMapper;
@@ -18,11 +20,17 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static cn.zhouhao.shortlink.admin.common.constant.RedisCacheConstant.LOCK_GROUP_CREATE_KEY;
 
 /**
  * @author hiroshi
@@ -32,6 +40,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
+
+    private final RedissonClient redissonClient;
+
+    @Value("${short-link.group.max-num}")
+    private Integer groupMaxNum;
 
     private final ShortLinkService shortLinkService = new ShortLinkService() {
     };
@@ -44,19 +57,38 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     }
 
+
     @Override
     public void saveGroup(String groupName) {
-        String gid;
+        saveGroup(UserContext.getUsername(), groupName);
+    }
 
-        do {
-            gid = RandomGenerator.generateRandom();
-        } while (hasGid(gid));
-        GroupDO groupDO = GroupDO.builder()
-                .gid(gid)
-                .name(groupName)
-                .username(UserContext.getUsername())
-                .build();
-        baseMapper.insert(groupDO);
+    @Override
+    public void saveGroup(String username, String groupName) {
+        RLock lock = redissonClient.getLock(String.format(LOCK_GROUP_CREATE_KEY, username));
+        lock.lock();
+        try {
+            LambdaQueryWrapper<GroupDO> queryWrapper = Wrappers.lambdaQuery(GroupDO.class)
+                    .eq(GroupDO::getUsername, username)
+                    .eq(GroupDO::getDelFlag, 0);
+            List<GroupDO> groupDOList = baseMapper.selectList(queryWrapper);
+            if (CollUtil.isNotEmpty(groupDOList) && groupDOList.size() == groupMaxNum) {
+                throw new ClientException("分组数量已达上限");
+            }
+            String gid;
+            do {
+                gid = RandomGenerator.generateRandom();
+            } while (hasGid(gid));
+            GroupDO groupDO = GroupDO.builder()
+                    .gid(gid)
+                    .name(groupName)
+                    .username(UserContext.getUsername())
+                    .sortOrder(0)
+                    .build();
+            baseMapper.insert(groupDO);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
