@@ -8,7 +8,9 @@ import cn.zhouhao.shortlink.project.dto.req.ShortLinkUpdateReqDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkCreateRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkGroupCountQueryRespDTO;
 import cn.zhouhao.shortlink.project.dto.resp.ShortLinkPageRespDTO;
+import cn.zhouhao.shortlink.project.handler.CustomBlockHandler;
 import cn.zhouhao.shortlink.project.service.ShortLinkService;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -29,6 +31,11 @@ public class ShortLinkController {
     private final ShortLinkService shortLinkService;
 
     @PostMapping("/api/short-link/v1/create")
+    @SentinelResource(
+            value = "create_short-link",
+            blockHandler = "createShortLinkBlockHandlerMethod",
+            blockHandlerClass = CustomBlockHandler.class
+    )
     public Result<ShortLinkCreateRespDTO> createShortLink(@RequestBody ShortLinkCreateReqDTO requestParam) {
         return Results.success(shortLinkService.createShortLink(requestParam));
     }
